@@ -18,10 +18,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.navigation.NavController
 import com.example.photosapp.ui.NavRoutes
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
 
 @Composable
 fun PhotoListScreen(
-    viewModel: PhotoListViewModel = hiltViewModel(), navController: NavController
+    navController: NavController, viewModel: PhotoListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -66,11 +69,11 @@ fun PhotoListScreen(
                     placeholder = { Text("Search photos...") },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
-                    keyboardActions = androidx.compose.foundation.text.KeyboardActions(
+                    keyboardActions = KeyboardActions(
                         onSearch = { viewModel.searchPhotos(searchQuery) }
                     ),
-                    keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                        imeAction = androidx.compose.ui.text.input.ImeAction.Search
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Search
                     )
                 )
                 Spacer(modifier = Modifier.width(8.dp))
