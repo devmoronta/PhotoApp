@@ -19,11 +19,13 @@ data class PhotoUiState(
     val errorMessage: String? = null,
     val currentPage: Int = 1,
     val canPaginate: Boolean = true,
-    val currentQuery: String = ""
+    val currentQuery: String = "",
+    val selectedPhoto: Photo? = null
 )
 
 @HiltViewModel
-class PhotoViewModel @Inject constructor(private val repository: FlickrRepository) : ViewModel() {
+class PhotoListViewModel @Inject constructor(private val repository: FlickrRepository) :
+    ViewModel() {
     private val _uiState = MutableStateFlow(PhotoUiState())
     val uiState: StateFlow<PhotoUiState> = _uiState.asStateFlow()
 
@@ -44,6 +46,9 @@ class PhotoViewModel @Inject constructor(private val repository: FlickrRepositor
         getPhotos()
     }
 
+    fun selectPhoto(photo: Photo) {
+        _uiState.update { it.copy(selectedPhoto = photo) }
+    }
     fun loadMore() {
         val state = _uiState.value
         if (state.isLoading || state.isPaginating || !state.canPaginate) return
@@ -87,7 +92,6 @@ class PhotoViewModel @Inject constructor(private val repository: FlickrRepositor
                             errorMessage = error.message ?: "Something went wrong"
                         )
                     }
-
                 }
             )
         }

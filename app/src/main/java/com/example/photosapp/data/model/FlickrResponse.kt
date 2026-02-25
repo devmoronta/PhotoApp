@@ -3,11 +3,11 @@ package com.example.photosapp.data.model
 import com.google.gson.annotations.SerializedName
 
 data class FlickrResponse(
-    @SerializedName("photos") val photos: PhotosResult,
+    @SerializedName("photos") val photos: FlickrPhotosResult,
     @SerializedName("stat") val stat: String
 )
 
-data class PhotosResult(
+data class FlickrPhotosResult(
     @SerializedName("page") val page: Int,
     @SerializedName("pages") val pages: Int,
     @SerializedName("perpage") val perPage: Int,
@@ -20,5 +20,9 @@ data class FlickrPhoto(
     @SerializedName("owner") val owner: String,
     @SerializedName("secret") val secret: String,
     @SerializedName("server") val server: String,
-    @SerializedName("title") val title: String
+    @SerializedName("farm") val farm: Int,
+    @SerializedName("title") val title: String,
+    @SerializedName("ispublic") val isPublic: Int,
+    @SerializedName("isfriend") val isFriend: Int,
+    @SerializedName("isfamily") val isFamily: Int
 )

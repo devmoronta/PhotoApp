@@ -32,15 +32,21 @@ class FlickrRepository @Inject constructor(
             val photos = response.photos.photo.map { dto ->
                 Photo(
                     id = dto.id,
-                    title = dto.title,
                     owner = dto.owner,
+                    secret = dto.secret,
+                    server = dto.server,
+                    farm = dto.farm,
+                    title = dto.title,
+                    isPublic = dto.isPublic == 1,
+                    isFriend = dto.isFriend == 1,
+                    isFamily = dto.isFamily == 1,
                     imageUrl = "https://live.staticflickr.com/${dto.server}/${dto.id}_${dto.secret}.jpg"
                 )
             }
 
             Result.success(photos)
         } catch (e: Exception) {
-            Result.failure (
+            Result.failure(
                 when (e) {
                     is UnknownHostException -> Exception("No internet connection")
                     is SocketTimeoutException -> Exception("Request timed out")

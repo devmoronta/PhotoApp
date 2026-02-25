@@ -1,25 +1,20 @@
 package com.example.photosapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.example.photosapp.data.api.FlickrApiService
-import com.example.photosapp.ui.screens.PhotoScreen
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.photosapp.ui.NavRoutes
+import com.example.photosapp.ui.screens.PhotoDetailScreen
+import com.example.photosapp.ui.screens.PhotoListScreen
 import com.example.photosapp.ui.theme.PhotosAppTheme
+import com.example.photosapp.viewmodel.PhotoListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -28,7 +23,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PhotosAppTheme {
-                PhotoScreen()
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = NavRoutes.PHOTO_LIST
+                ) {
+                    composable(NavRoutes.PHOTO_LIST) { backStackEntry ->
+                        val parentEntry = remember(backStackEntry) {
+                            navController.getBackStackEntry(NavRoutes.PHOTO_LIST)
+                        }
+                        val viewModel: PhotoListViewModel = hiltViewModel(parentEntry)
+                        PhotoListScreen(navController = navController, viewModel = viewModel)
+                    }
+                    composable(NavRoutes.PHOTO_DETAIL) { backStackEntry ->
+                        val parentEntry = remember(backStackEntry) {
+                            navController.getBackStackEntry(NavRoutes.PHOTO_LIST)
+                        }
+                        val viewModel: PhotoListViewModel = hiltViewModel(parentEntry)
+                        PhotoDetailScreen(navController = navController, viewModel = viewModel)
+                    }
+                }
             }
         }
     }

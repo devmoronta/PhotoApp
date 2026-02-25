@@ -1,5 +1,6 @@
 package com.example.photosapp.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.*
@@ -10,15 +11,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.example.photosapp.viewmodel.PhotoViewModel
+import com.example.photosapp.viewmodel.PhotoListViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.navigation.NavController
+import com.example.photosapp.ui.NavRoutes
 
 @Composable
-fun PhotoScreen(
-    viewModel: PhotoViewModel = hiltViewModel()
+fun PhotoListScreen(
+    viewModel: PhotoListViewModel = hiltViewModel(), navController: NavController
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -83,15 +86,24 @@ fun PhotoScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(uiState.photos) { photo ->
-                        AsyncImage(
-                            model = photo.imageUrl,
-                            contentDescription = photo.title,
-                            contentScale = ContentScale.Crop,
+                        Box(
                             modifier = Modifier
                                 .aspectRatio(1f)
-                                .padding(2.dp)
-                                .clip(RoundedCornerShape(4.dp))
-                        )
+                                .clickable {
+                                    viewModel.selectPhoto(photo)
+                                    navController.navigate(NavRoutes.PHOTO_DETAIL)
+                                }) {
+
+                            AsyncImage(
+                                model = photo.imageUrl,
+                                contentDescription = photo.title,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .aspectRatio(1f)
+                                    .padding(2.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                            )
+                        }
                     }
 
                     if (uiState.isPaginating) {
