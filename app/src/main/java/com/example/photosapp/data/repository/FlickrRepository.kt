@@ -37,7 +37,14 @@ class FlickrRepository @Inject constructor(
 
             Result.success(photos)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure (
+                when (e) {
+                    is java.net.UnknownHostException -> Exception("No internet connection")
+                    is java.net.SocketTimeoutException -> Exception("Request timed out")
+                    is retrofit2.HttpException -> Exception("Server error: ${e.code()}")
+                    else -> Exception("Something went wrong")
+                }
+            )
         }
     }
 }
