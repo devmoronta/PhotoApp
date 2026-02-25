@@ -28,7 +28,7 @@ fun PhotoDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Photo Detail") },
+                title = { Text(photo?.title?.ifBlank { "Photo Detail" } ?: "Photo Detail") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -53,11 +53,6 @@ fun PhotoDetailScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Title: ${it.title.ifBlank { "No title" }}",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Owner: ${it.owner}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = "ID: ${it.id}", style = MaterialTheme.typography.bodyMedium)
