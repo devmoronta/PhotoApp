@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PhotoRepository @Inject constructor(
+class FlickrRepository @Inject constructor(
     private val apiService: FlickrApiService
 ) {
 
