@@ -49,6 +49,7 @@ class PhotoListViewModel @Inject constructor(private val repository: FlickrRepos
     fun selectPhoto(photo: Photo) {
         _uiState.update { it.copy(selectedPhoto = photo) }
     }
+
     fun loadMore() {
         val state = _uiState.value
         if (state.isLoading || state.isPaginating || !state.canPaginate) return
@@ -79,7 +80,9 @@ class PhotoListViewModel @Inject constructor(private val repository: FlickrRepos
                             isLoading = false,
                             isPaginating = false,
                             canPaginate = newPhotos.size >= 20,
-                            errorMessage = null
+                            errorMessage = if (newPhotos.isEmpty() && it.currentPage == 1)
+                                ERROR_NO_PHOTOS
+                            else null
                         )
                     }
 
@@ -89,11 +92,16 @@ class PhotoListViewModel @Inject constructor(private val repository: FlickrRepos
                         it.copy(
                             isLoading = false,
                             isPaginating = false,
-                            errorMessage = error.message ?: "Something went wrong"
+                            errorMessage = error.message ?: ERROR_GENERIC
                         )
                     }
                 }
             )
         }
+    }
+
+    companion object {
+        const val ERROR_NO_PHOTOS = "No photos found"
+        const val ERROR_GENERIC = "Something went wrong"
     }
 }
