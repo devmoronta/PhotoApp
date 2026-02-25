@@ -3,7 +3,7 @@ package com.example.photosapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.photosapp.data.model.Photo
-import com.example.photosapp.repository.FlickrRepository
+import com.example.photosapp.data.repository.FlickrRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

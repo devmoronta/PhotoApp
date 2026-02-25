@@ -1,8 +1,11 @@
-package com.example.photosapp.repository
+package com.example.photosapp.data.repository
 
 import com.example.photosapp.BuildConfig
 import com.example.photosapp.data.api.FlickrApiService
 import com.example.photosapp.data.model.Photo
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,9 +42,9 @@ class FlickrRepository @Inject constructor(
         } catch (e: Exception) {
             Result.failure (
                 when (e) {
-                    is java.net.UnknownHostException -> Exception("No internet connection")
-                    is java.net.SocketTimeoutException -> Exception("Request timed out")
-                    is retrofit2.HttpException -> Exception("Server error: ${e.code()}")
+                    is UnknownHostException -> Exception("No internet connection")
+                    is SocketTimeoutException -> Exception("Request timed out")
+                    is HttpException -> Exception("Server error: ${e.code()}")
                     else -> Exception("Something went wrong")
                 }
             )
