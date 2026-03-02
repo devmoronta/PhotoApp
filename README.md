@@ -1,7 +1,6 @@
 # Photos App
 
 An Android app that allows users to search and browse photos using the Flickr API. 
-Omada Health Take Home submission.
 
 ## Videos
 - [App Walkthrough](https://github.com/user-attachments/assets/234af415-9a59-4607-933a-fc693c4b93c7
